@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom"
 
 export const Navbar = () => {
-	const navigate = useNavigate()
 	return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container px-4 px-lg-5">
@@ -14,23 +12,20 @@ export const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="./home">Inicio</a>
+                            <a className="nav-link active" aria-current="page" href="#!">Inicio</a>
                         </li>
                         <li className="nav-item">
-						<a className="nav-link" href="./aboutUs" >Sobre nosotros</a>
-						</li>                        
+                            <a className="nav-link" href="#!">Sobre nosotros</a>
+                        </li>                        
                     </ul>
                     <form className="d-flex">
-                        <button className="btn btn-outline-dark me-2" type="submit">
-                            <i className="bi-cart-fill me-1"></i>    
-                            Carrito 
-                            <span className="badge bg-dark text-white ms-1 rounded-pill">0</span>                      
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>    
+                            "Carrito" 
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>                      
                         </button>
-						<button type="button" className="btn btn-outline-dark me-2">Login</button>
-						<button type="button" className="btn btn-primary">Sign-up</button>
-					</form>					                
+                    </form>
                 </div>
             </div>
-        </nav>
-		);
+        </nav>);
 };
