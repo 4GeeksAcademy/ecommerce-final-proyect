@@ -13,6 +13,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import CreateAccount from "./pages/createUser";
 import { Cart } from "./pages/cart";
+import { Confirmation } from "./pages/confirmation";
 
 //create your first component
 const Layout = () => {
@@ -31,6 +32,7 @@ const Layout = () => {
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Cart />} path="/cart" />
+                        <Route element={<Confirmation />} path="/confirmation" />
                         <Route element={<AboutUs />} path="/aboutUs" />
                         <Route element={<CreateAccount />} path="/createUser" />
                         <Route element={<SingleArticle />} path="/single" />
