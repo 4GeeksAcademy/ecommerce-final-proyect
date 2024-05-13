@@ -9,9 +9,9 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)
     apellido = db.Column(db.String(250), nullable=False)
-    email = db.Column(db.String(250), nullable=False)
-    articulos_favoritos = db.relationship('ArticulosFavoritos', backref='usuario', lazy=True)
+    email = db.Column(db.String(250), nullable=False)   
     cesta = db.relationship('Cesta', backref='usuario', lazy=True)
+    # articulos_favoritos = db.relationship('ArticulosFavoritos', backref='usuario', lazy=True)
 
     def __repr__(self):
         return "<Usuario %r >" % self.nombre
@@ -33,7 +33,7 @@ class Articulos(db.Model):
     precio = db.Column(db.Integer)
     imagen = db.Column(db.String(250))
     descripcion = db.Column(db.String(250), nullable=False)
-    articulos_favoritos = db.relationship('ArticulosFavoritos', backref='articulos', lazy=True)
+    # articulos_favoritos = db.relationship('ArticulosFavoritos', backref='articulos', lazy=True)
 
     def __repr__(self):
         return "<Articulos %r >" % self.nombre
@@ -47,31 +47,47 @@ class Articulos(db.Model):
             "descripcion": self.descripcion
         }
 
-class ArticulosFavoritos(db.Model):
-    __tablename__ = 'articulosfavoritos'
-    id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
-    articulo_id = db.Column(db.Integer,db.ForeignKey("articulos.id"))
+# class ArticulosFavoritos(db.Model):
+#     __tablename__ = 'articulosfavoritos'
+#     id = db.Column(db.Integer, primary_key=True)
+#     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
+#     articulo_id = db.Column(db.Integer,db.ForeignKey("articulos.id"))
 
-    def __repr__(self):
-        return "<ArticulosFavoritos %r >" % self.id
+#     def __repr__(self):
+#         return "<ArticulosFavoritos %r >" % self.id
     
-    def serialize(self):
-        return {
-            "id": self.id,
-            "usuario_id": self.usuario_id,
-            "articulo_id": self.articulo_id
-        }
+#     def serialize(self):
+#         return {
+#             "id": self.id,
+#             "usuario_id": self.usuario_id,
+#             "articulo_id": self.articulo_id
+#         }
     
 
 class Cesta(db.Model):
     __tablename__ = 'cesta'
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
-    articulo_id = db.Column(db.Integer,db.ForeignKey("articulos.id"))
+    creado_en = db.Column(db.Integer)
 
     def __repr__(self):
         return "<Cesta %r >" % self.id
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "usuario_id": self.usuario_id,
+            "creado_en": self.creado_en_id
+        }
+    
+class ArticulosCesta(db.Model):
+    __tablename__ = 'articuloscesta'
+    id = db.Column(db.Integer, primary_key=True)
+    cesta_id = db.Column(db.Integer, db.ForeignKey("cesta.id"))
+    articulo_id = db.Column(db.Integer, db.ForeignKey("articulo.id"))
+
+    def __repr__(self):
+        return "<ArticulosCesta %r >" % self.id
     
     def serialize(self):
         return {
