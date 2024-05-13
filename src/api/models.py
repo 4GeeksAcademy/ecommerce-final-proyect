@@ -69,6 +69,7 @@ class Cesta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
     creado_en = db.Column(db.Integer)
+    articulos_cesta = db.relationship('ArticulosCesta', backref='cesta', lazy=True)
 
     def __repr__(self):
         return "<Cesta %r >" % self.id
@@ -85,6 +86,7 @@ class ArticulosCesta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cesta_id = db.Column(db.Integer, db.ForeignKey("cesta.id"))
     articulo_id = db.Column(db.Integer, db.ForeignKey("articulo.id"))
+    
 
     def __repr__(self):
         return "<ArticulosCesta %r >" % self.id
