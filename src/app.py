@@ -9,7 +9,7 @@ from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
-from api.commands import setup_commands
+# from api.commands import setup_commands
 
 # from models import Person
 
@@ -35,7 +35,7 @@ db.init_app(app)
 setup_admin(app)
 
 # add the admin
-setup_commands(app)
+# setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')

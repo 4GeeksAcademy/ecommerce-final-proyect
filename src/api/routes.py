@@ -2,7 +2,6 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -11,25 +10,25 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-@app.route('/')
-def sitemap():
-    return generate_sitemap(app)
+# @api.route('/')
+# def sitemap():
+#     return generate_sitemap(app)
 
-@app.route('/items', methods=['GET'])
-def get_all_items():
+# @api.route('/items', methods=['GET'])
+# def get_all_items():
 
-    # this is how you can use the Family datastructure by calling its methods
-    items = articulos.get_all_items()
-    print(items)
-    if items == []:
-        return jsonify({"msg": "No existen articulos"}), 404
+#     # this is how you can use the Family datastructure by calling its methods
+#     items = articulos.get_all_items()
+#     print(items)
+#     if items == []:
+#         return jsonify({"msg": "No existen articulos"}), 404
     
-    response_body = {
-        "articulos": items
-    }
+#     response_body = {
+#         "articulos": items
+#     }
 
 
-    return jsonify(response_body), 200
+#     return jsonify(response_body), 200
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
