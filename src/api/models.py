@@ -2,15 +2,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class CestaArticuloAssociation(db.Model):
+    __tablename__ = 'cesta_articulo'
+    cesta_id = db.Column(db.Integer, db.ForeignKey("cesta.id"), primary_key=True),
+    articulo_id = db.Column(db.Integer, db.ForeignKey("articulo.id"), primary_key=True)
+
 class Usuario(db.Model):
     __tablename__ = 'usuario'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)
     apellido = db.Column(db.String(250), nullable=False)
     email = db.Column(db.String(250), nullable=False)   
-    cesta = db.relationship('Cesta', backref='usuario', lazy=True)
+    # cesta_lista = db.relationship('Cesta', back_populates='usuario')
     # articulos_favoritos = db.relationship('ArticulosFavoritos', backref='usuario', lazy=True)
 
     def __repr__(self):
@@ -21,13 +24,31 @@ class Usuario(db.Model):
             "id": self.id,
             "nombre": self.nombre,
             "email": self.email,
-            "apellido": self.apellido
+            "apellido": self.apellido,
+            # "cesta_lista": [cesta.serialize() for cesta in self.cesta_lista]
+        }
+    
+class Cesta(db.Model):
+    __tablename__ = 'cesta'
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
+    creado_en = db.Column(db.Integer)
+    comprado = db.Column(db.Boolean)
+    # articulo_lista = db.relationship('Articulo', secondary = "cesta_articulo", back_populates = "cesta_lista")
+    
+    def __repr__(self):
+        return "<Cesta %r >" % self.id
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "usuario_id": self.usuario_id,
+            "creado_en": self.creado_en_id,
+            # "articulo_lista": [articulo.serialize() for articulo in self.articulo_lista]
         }
 
-class Articulos(db.Model):
-    __tablename__ = 'articulos'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+class Articulo(db.Model):
+    __tablename__ = 'articulo'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250))
     precio = db.Column(db.Integer)
@@ -47,51 +68,3 @@ class Articulos(db.Model):
             "descripcion": self.descripcion
         }
 
-# class ArticulosFavoritos(db.Model):
-#     __tablename__ = 'articulosfavoritos'
-#     id = db.Column(db.Integer, primary_key=True)
-#     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
-#     articulo_id = db.Column(db.Integer,db.ForeignKey("articulos.id"))
-
-#     def __repr__(self):
-#         return "<ArticulosFavoritos %r >" % self.id
-    
-#     def serialize(self):
-#         return {
-#             "id": self.id,
-#             "usuario_id": self.usuario_id,
-#             "articulo_id": self.articulo_id
-#         }
-    
-
-class Cesta(db.Model):
-    __tablename__ = 'cesta'
-    id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"))
-    creado_en = db.Column(db.Integer)
-
-    def __repr__(self):
-        return "<Cesta %r >" % self.id
-    
-    def serialize(self):
-        return {
-            "id": self.id,
-            "usuario_id": self.usuario_id,
-            "creado_en": self.creado_en_id
-        }
-    
-class ArticulosCesta(db.Model):
-    __tablename__ = 'articuloscesta'
-    id = db.Column(db.Integer, primary_key=True)
-    cesta_id = db.Column(db.Integer, db.ForeignKey("cesta.id"))
-    articulo_id = db.Column(db.Integer, db.ForeignKey("articulo.id"))
-
-    def __repr__(self):
-        return "<ArticulosCesta %r >" % self.id
-    
-    def serialize(self):
-        return {
-            "id": self.id,
-            "usuario_id": self.usuario_id,
-            "articulo_id": self.articulo_id
-        }
