@@ -9,7 +9,7 @@ from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
-# from api.commands import setup_commands
+from api.commands import setup_commands
 
 # from models import Person
 
@@ -35,7 +35,7 @@ db.init_app(app)
 setup_admin(app)
 
 # add the admin
-# setup_commands(app)
+setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
@@ -55,6 +55,22 @@ def sitemap():
     if ENV == "development":
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
+
+# @app.route('/items', methods=['GET'])
+# def get_all_items():
+
+#     # this is how you can use the Family datastructure by calling its methods
+#     items = articulos.get_all_items()
+#     print(items)
+#     if items == []:
+#         return jsonify({"msg": "No existen articulos"}), 404
+    
+#     response_body = {
+#         "articulos": items
+#     }
+
+
+#     return jsonify(response_body), 200
 
 # any other endpoint will try to serve it like a static file
 
