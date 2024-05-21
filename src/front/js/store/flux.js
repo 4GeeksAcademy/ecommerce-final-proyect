@@ -21,12 +21,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
-			getMessage: async () => {
+			getProducts: async () => {
 				try{
 					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const resp = await fetch(process.env.BACKEND_URL + "/productos")
 					const data = await resp.json()
-					setStore({ message: data.message })
+					setStore({ productos: data, destacados:data.slice(5) })
 					// don't forget to return something, that is how the async resolves
 					return data;
 				}catch(error){
