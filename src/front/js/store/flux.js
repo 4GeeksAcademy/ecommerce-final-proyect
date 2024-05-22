@@ -40,6 +40,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading one product from backend", error), 400}
 			},
 
+			createUser: async (email,password) => {
+				try {
+					fetch(process.env.BACKEND_URL + "/register", {
+						method: "POST", 
+						headers: {"Content-Type": "application/json"},
+						body: JSON.stringify({
+							email,
+							password
+						})
+					})
+					.then((response => {response.json}))
+					.then((data => console.log(data)))
+					.catch(error => console.log(error))
+				} catch (error) {
+					console.log("Error creating user from backend", error), 400
+				}
+
+			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
