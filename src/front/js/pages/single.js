@@ -10,22 +10,23 @@ export const SingleArticle = () => {
     // useEffect(() => {
     //      actions.getOneProduct(params.uid)
     //    }, []);
+    console.log(store.producto);
   return (
     <div className="card mb-3" style={{ maxWidth: "800px", margin: "0 auto" }}>
       <div className="row g-0">
         <div className="col-md-4">
-          <img src={store.productos[params.id].imagen } className="img-fluid rounded-start" />
+          <img src={store.producto[params.id].imagen } className="img-fluid rounded-start" />
         </div>
-        {/* <div className="col-md-8">
+         <div className="col-md-8">
           <div className="card-body">
-            <h5 className="card-title">{store.articles?.properties?.name}</h5>
+            <h5 className="card-title">{store.producto[params.id].nombre}</h5>
             <p className="card-text">
-              {store.articles?.description}
+              {store.producto[params.id].descripcion}
             </p>
             
           </div>
         </div>
-      </div>
+      {/*</div>
       <div className="g-0 d-flex justify-content-around p-1 border-top">
         <div>
             Height: {store.character?.properties?.height}

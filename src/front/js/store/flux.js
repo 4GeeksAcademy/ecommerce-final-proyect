@@ -17,22 +17,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-
+			
 			getProducts: async () => {
 				try{
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/productos")
 					const data = await resp.json()
-					setStore({ productos: data, destacados:data.slice(5) })
+					setStore({ productos: data })
 					// don't forget to return something, that is how the async resolves
 					return data;
 				}catch(error){
-					console.log("Error loading message from backend", error)
+					console.log("Error loading products from backend", error), 400
 				}
 			},
+
+			getOneProduct: async () => {
+				try{
+					const resp = await fetch(process.env.BACKEND_URL + "/productos/{:id}")
+					const data = await resp.json()
+					setStore({ producto: data })
+				}catch(error){
+					console.log("Error loading one product from backend", error), 400}
+			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();

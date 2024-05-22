@@ -7,7 +7,7 @@ export const Card = ({ nombre,precio, descripcion,uid,type,imagen }) => {
   const {store, actions} = useContext(Context)
   console.log( nombre,precio, descripcion,uid,type,imagen );
   return (
-    <div className="card" style={{ width: "18rem" }}>
+    <div className="card mx-auto" style={{ width: "18rem" }}>
       <img
         src={imagen}
         className="card-img-top mx-0"
@@ -21,12 +21,12 @@ export const Card = ({ nombre,precio, descripcion,uid,type,imagen }) => {
           Añadir a carrito
           <i className="bi-cart-fill me-1"></i>
         </Link>
-        <button
+        {/* <button
           className="btn btn-outline-warning"
           onClick={() => actions.addCart(name)}
         >
           <i className="fa fa-heart"></i>
-        </button>
+        </button> */}
         </div>
       </div>
     </div>
