@@ -51,7 +51,7 @@ class Articulo(db.Model):
     __tablename__ = 'articulo'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250))
-    precio = db.Column(db.Integer)
+    precio = db.Column(db.Float)
     imagen = db.Column(db.String(250))
     descripcion = db.Column(db.String(250), nullable=False)
 

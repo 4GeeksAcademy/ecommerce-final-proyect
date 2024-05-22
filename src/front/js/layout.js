@@ -21,7 +21,7 @@ const Layout = () => {
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
 
-    // if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
 
     return (
         <div>
@@ -35,7 +35,7 @@ const Layout = () => {
                         <Route element={<Confirmation />} path="/confirmation" />
                         <Route element={<AboutUs />} path="/aboutUs" />
                         <Route element={<CreateAccount />} path="/createUser" />
-                        <Route element={<SingleArticle />} path="/single" />
+                        <Route element={<SingleArticle />} path="/single/:id" />
                         {/* <Route element={<SingleArticle />} path="/single/:theid" /> */}
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
