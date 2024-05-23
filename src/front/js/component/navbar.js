@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
     const navigate = useNavigate()
+    const {store,actions} = useContext(Context)
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container px-4 px-lg-5">
@@ -25,10 +30,13 @@ export const Navbar = () => {
                             <i className="fas fa-shopping-cart me-1"></i>
                             <span className="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button>
+                        {store.session && <button type="button" className="btn btn-primary me-2" onClick={()=>actions.setSessionNull()} >
+                            Log out
+                        </button>}
 
-                        <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        {!store.session && <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Login
-                        </button>
+                        </button>}
 
                         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div className="modal-dialog">
@@ -43,7 +51,7 @@ export const Navbar = () => {
                                                 <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div data-mdb-input-init className="form-outline flex-fill mb-0">
                                                     <input type="email" id="form3Example3c" className="form-control"
-                                                        name='email'  />
+                                                        name='email' value={email} onChange={(e)=>setEmail(e.target.value)}  />
                                                     <label className="form-label" htmlFor="form3Example3c">Your Email</label>
                                                 </div>
                                             </div>
@@ -52,7 +60,7 @@ export const Navbar = () => {
                                                 <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                                                 <div data-mdb-input-init className="form-outline flex-fill mb-0">
                                                     <input type="password" id="form3Example4c" className="form-control"
-                                                        name='password'  />
+                                                        name='password'value={password} onChange={(e)=>setPassword(e.target.value)}  />
                                                     <label className="form-label" htmlFor="form3Example4c">Password</label>
                                                 </div>
                                             </div>
@@ -60,13 +68,13 @@ export const Navbar = () => {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" className="btn btn-primary">Login</button>
+                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={()=>actions.loginUser(email,password)}>Login</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <Link to="/createUser" type="button" className="btn btn-primary">Sign-up</Link>
+                        {!store.session && <Link to="/createUser" type="button" className="btn btn-primary">Sign-up</Link>}
                     </div>
                 </div>
             </div>

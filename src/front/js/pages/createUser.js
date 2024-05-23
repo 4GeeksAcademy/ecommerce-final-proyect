@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { Context } from '../store/appContext';
+import { useNavigate } from 'react-router-dom';
 
 export const CreateAccount = () => {
+  const {store,actions}=useContext(Context)
+  const navigate = useNavigate()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 console.log(email);
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // ESTO HACE QUE EL EMAIL Y LA CONTRASEÑA NO ES LA MISMA
+    // ESTO COMPRUEBA QUE EL EMAIL Y LA CONTRASEÑA NO ESTÁ VACIA
 
     if (!email || !password) {
       alert('Please enter both email and password');
       return;
     }
-
+    const result = await actions.createUser(email,password)
+    console.log(result)
+    if (!!result){
+      navigate("/")
+    }
     // CONSOLE LOG PARA VER SI TRAE LOS DATOS. ELIMINAR ANTES DE FINAL PORQUE SE VE LA CONTRASEÑA. Esto debe cambiar por un fetch con método POST
     console.log(`Creating account with email: ${email}, password: ${password}`);
   };

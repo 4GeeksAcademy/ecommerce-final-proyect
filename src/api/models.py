@@ -10,9 +10,10 @@ cesta_articulo = db.Table('cesta_articulo',
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(250), nullable=False)
-    apellido = db.Column(db.String(250), nullable=False)
-    email = db.Column(db.String(250), nullable=False)   
+    nombre = db.Column(db.String(250), nullable=True)
+    apellido = db.Column(db.String(250), nullable=True)
+    email = db.Column(db.String(250), nullable=False)
+    password = db.Column(db.String(250), nullable=False) 
     cesta_lista = db.relationship('Cesta', backref='usuario', lazy=True)
 
     def __repr__(self):
