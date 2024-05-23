@@ -31,8 +31,12 @@ def handle_register():
     user=Usuario(email=request_body["email"],password=request_body["password"])
     db.session.add(user)
     db.session.commit()
-    response_body = {
-        "message": "Usuario creado correctamente"
-    }
-    
-    return jsonify(response_body), 200
+    return jsonify(user.serialize()), 201
+
+@api.route('/login', methods = ['POST'])
+def login_user():
+    request_body = request.get_json(force=True)
+    user = Usuario.query.filter_by(email=request_body["email"]).first()
+    if user is None: 
+        raise APIException("Las credenciales son incorrectas",403)
+    return jsonify(user.serialize()),200

@@ -8,7 +8,7 @@ export const CreateAccount = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 console.log(email);
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // ESTO COMPRUEBA QUE EL EMAIL Y LA CONTRASEÑA NO ESTÁ VACIA
@@ -17,11 +17,11 @@ console.log(email);
       alert('Please enter both email and password');
       return;
     }
-    const result = actions.createUser(email,password)
+    const result = await actions.createUser(email,password)
     console.log(result)
-    // if (result.status == 201 ){
-    //   navigate("/")
-    // }
+    if (!!result){
+      navigate("/")
+    }
     // CONSOLE LOG PARA VER SI TRAE LOS DATOS. ELIMINAR ANTES DE FINAL PORQUE SE VE LA CONTRASEÑA. Esto debe cambiar por un fetch con método POST
     console.log(`Creating account with email: ${email}, password: ${password}`);
   };
