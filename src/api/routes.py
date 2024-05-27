@@ -28,7 +28,7 @@ def handle_register():
     verify_email = Usuario.query.filter_by(email=request_body["email"]).first()
     if verify_email: 
         raise APIException("Esta cuenta ya existe",401)
-    user=Usuario(email=request_body["email"],password=request_body["password"])
+    user=Usuario(nombre=request_body["nombre"],email=request_body["email"],password=request_body["password"])
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize()), 201

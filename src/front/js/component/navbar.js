@@ -26,10 +26,10 @@ export const Navbar = () => {
                         </li>
                     </ul>
                     <div className="d-flex">
-                        <button className="btn btn-outline-dark me-2" type="submit">
+                        {store.session && <button className="btn btn-outline-dark me-2" type="submit">
                             <i className="fas fa-shopping-cart me-1"></i>
                             <span className="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
+                        </button>}
                         {store.session && <button type="button" className="btn btn-primary me-2" onClick={()=>actions.setSessionNull()} >
                             Log out
                         </button>}
