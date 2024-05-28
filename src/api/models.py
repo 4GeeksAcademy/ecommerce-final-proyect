@@ -2,10 +2,21 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-cesta_articulo = db.Table('cesta_articulo',
-    db.Column('cesta_id', db.Integer, db.ForeignKey('cesta.id'), primary_key=True),
-    db.Column('articulo_id', db.Integer, db.ForeignKey('articulo.id'), primary_key=True)
-)
+class CestaArticulo(db.Model):
+    __tablename__ = 'cesta_articulo'
+
+    cesta_id = db.Column(db.Integer, db.ForeignKey('cesta.id'), primary_key=True)
+    articulo_id = db.Column(db.Integer, db.ForeignKey('articulo.id'), primary_key=True)
+    def serialize(self):
+        return {
+            "id": self.id,
+            "cesta_id": self.cesta_id,
+            "articulo_id": self.articulo_id,
+           }
+# cesta_articulo = db.Table('cesta_articulo',
+#     db.Column('cesta_id', db.Integer, db.ForeignKey('cesta.id'), primary_key=True),
+#     db.Column('articulo_id', db.Integer, db.ForeignKey('articulo.id'), primary_key=True)
+# )
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -33,7 +44,7 @@ class Cesta(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
     creado_en = db.Column(db.Integer)
     comprado = db.Column(db.Boolean)
-    cesta_articulo = db.relationship('Articulo', secondary=cesta_articulo, lazy='subquery',
+    cesta_articulo = db.relationship('CestaArticulo',
         backref=db.backref('cesta', lazy=True))
     
     
@@ -44,7 +55,7 @@ class Cesta(db.Model):
         return {
             "id": self.id,
             "usuario_id": self.usuario_id,
-            "creado_en": self.creado_en_id,
+            "creado_en": self.creado_en,
             "cesta_articulo": [articulo.serialize() for articulo in self.cesta_articulo]
         }
 

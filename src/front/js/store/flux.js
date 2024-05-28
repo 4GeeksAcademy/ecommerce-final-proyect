@@ -34,6 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({
 						...store,session
 					}) 
+					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
 					return session
 				} catch (error) {
 					console.log("Error login user", error);
