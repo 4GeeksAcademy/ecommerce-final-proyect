@@ -13,7 +13,7 @@ export const Home = () => {
                     <p className="lead fw-normal text-white-25 mb-0">20% de descuento con el código "TEST20"</p>
                 </div>
             </header>
-            <div className="row mx-auto ">
+            <div className="container row mx-auto ">
                 {store.productos?.map(el => <div key={el.id} className="col-sm-3 col-lg-3 py-1">< Card nombre={el.nombre} precio={el.precio} descripcion={el.descripcion} uid={el.id} imagen={el.imagen} /></div>)}
             </div>
         </div>

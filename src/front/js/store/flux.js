@@ -14,7 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			session: null
+			session: null,
+			cart: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -26,14 +27,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers: {"Content-Type": "application/json"},
 						body: JSON.stringify({
 							email,
-							password
+							password,
 						})
 					})
 					const session = await response.json()
 					const store = getStore()
 					setStore({
-						...store,session
+						...store,session						
 					}) 
+					setStore({cart:session.cesta_lista[0]}) 
+					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
+					console.log(session)
 					return session
 				} catch (error) {
 					console.log("Error login user", error);
@@ -70,14 +74,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading one product from backend", error), 400}
 			},
 
-			createUser: async (email,password) => {
+			createUser: async (email,password, nombre) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/register", {
 						method: "POST", 
 						headers: {"Content-Type": "application/json"},
 						body: JSON.stringify({
 							email,
-							password
+							password,
+							nombre
 						})
 					})
 					const session = await response.json()

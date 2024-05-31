@@ -17,7 +17,7 @@ export const Card = ({ nombre,precio, descripcion,uid,type,imagen }) => {
         <p className="card-text my-0">
         </p>
         <div className="d-flex justify-content-between">
-        <Link to={`/views/${uid}`} className="btn btn-primary">
+        <Link to={`/single/${uid}`} className="btn btn-primary">
           Añadir a carrito
           <i className="bi-cart-fill me-1"></i>
         </Link>
