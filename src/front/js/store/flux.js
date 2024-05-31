@@ -14,7 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			session: null
+			session: null,
+			cart: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -32,9 +33,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const session = await response.json()
 					const store = getStore()
 					setStore({
-						...store,session
+						...store,session						
 					}) 
+					setStore({cart:session.cesta_lista[0]}) 
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
+					console.log(session)
 					return session
 				} catch (error) {
 					console.log("Error login user", error);
