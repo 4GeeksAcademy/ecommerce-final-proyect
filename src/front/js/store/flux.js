@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			session: null,
-			cart: []
+			cart: [],
+			productos: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -96,6 +97,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return null;
 				}
 
+			},
+
+			addToCart: async (id, articulo_id) => {
+				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta', {
+					body: JSON.stringify({
+						"cesta_id": id,
+						"articulo_id": articulo_id
+						})
+				})
+				const resp = resp => console.log(resp);
+				const error = error => console.log(error);
 			},
 
 			changeColor: (index, color) => {

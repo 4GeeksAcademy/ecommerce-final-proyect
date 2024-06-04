@@ -1,32 +1,28 @@
 import React, { useEffect, useContext } from "react";
 import "../../styles/home.css";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
-export const Card = ({ nombre,precio, descripcion,uid,type,imagen }) => {
+export const Card = ({ nombre,precio, descripcion,uid,imagen }) => {
   const {store, actions} = useContext(Context)
-  console.log( nombre,precio, descripcion,uid,type,imagen );
+  const navigate = useNavigate()
+  console.log( nombre,precio, descripcion,uid,imagen );
   return (
     <div className="card mx-auto" style={{ width: "18rem" }}>
       <img
         src={imagen}
         className="card-img-top mx-0"
+        onClick={()=>navigate(`/single/${uid}`)}
       />
       <div className="card-body">
-        <h5 className="card-title">{nombre}</h5>
+        <h5 onClick={()=>navigate(`/single/${uid}`)} className="card-title">{nombre}</h5>
         <p className="card-text my-0">
         </p>
         <div className="d-flex justify-content-between">
-        <Link to={`/single/${uid}`} className="btn btn-primary">
+        <div onClick={() => actions.addToCart(uid)} className="btn btn-primary">
           Añadir a carrito
           <i className="bi-cart-fill me-1"></i>
-        </Link>
-        {/* <button
-          className="btn btn-outline-warning"
-          onClick={() => actions.addCart(name)}
-        >
-          <i className="fa fa-heart"></i>
-        </button> */}
+        </div>
         </div>
       </div>
     </div>
