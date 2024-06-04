@@ -5,7 +5,7 @@ repository:
 labels:
   - name: "bug"
     color: c10000
-  - name: ":nerd_face: 4geeks student"
+  - name: ":nerd_face:"
     color: 7057ff
   - name: "enhancement"
     color: a2eeef
