@@ -47,11 +47,11 @@ console.log(email);
 
                 <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
 
-                <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                      <input type="text" id="form3Example1c" class="form-control" name='nombre' onChange={(event) => setNombre(event.target.value)} />
-                      <label class="form-label" for="form3Example1c">Tu nombre</label>
+                <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div data-mdb-input-init className="form-outline flex-fill mb-0">
+                      <input type="text" className="form-control" name='nombre' onChange={(event) => setNombre(event.target.value)} />
+                      <label className="form-label" >Tu nombre</label>
                     </div>
                   </div>
 

@@ -19,7 +19,7 @@ export const Card = ({ nombre,precio, descripcion,uid,imagen }) => {
         <p className="card-text my-0">
         </p>
         <div className="d-flex justify-content-between">
-        <div onClick={() => actions.addToCart(uid)} className="btn btn-primary">
+        <div onClick={() => actions.addToCart(store.cart.id, uid)} className="btn btn-primary">
           Añadir a carrito
           <i className="bi-cart-fill me-1"></i>
         </div>
