@@ -39,14 +39,14 @@ export const Confirmation = () => {
       //     </div>
       //   </div>
       // </div>
-      <div class="jumbotron text-center">
-  <h1 class="display-3">Thank You!</h1>
-  <p class="lead"><strong>Please check your email</strong> for further instructions on how to complete your account setup.</p>
+      <div className="jumbotron text-center">
+  <h1 className="display-3">Thank You!</h1>
+  <p className="lead"><strong>Please check your email</strong> for further instructions on how to complete your account setup.</p>
   <p>
     Having trouble? <a href="https://bootstrapcreative.com/">Contact us</a>
   </p>
-  <p class="lead">
-    <a class="btn btn-primary btn-sm" href="https://bootstrapcreative.com/" role="button">Continue to homepage</a>
+  <p className="lead">
+    <a className="btn btn-primary btn-sm" href="https://bootstrapcreative.com/" role="button">Continue to homepage</a>
   </p>
 </div>
     );

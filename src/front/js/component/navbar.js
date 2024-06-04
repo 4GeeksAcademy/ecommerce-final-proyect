@@ -9,7 +9,13 @@ export const Navbar = () => {
     const {store,actions} = useContext(Context)
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
-    return (
+    const [cart, setCart]= useState ([])
+fetch(process.env.BACKEND_URL + `/articulos_cesta/${store.cart.id}`)
+.then (response => response.json())
+// .then (response => console.log("CESTA", response))
+.then (response => setCart(response.articulos))
+
+   return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container px-4 px-lg-5">
                 <a className="navbar-brand" href="/"><i className="fa-solid fa-shop"></i></a>
@@ -26,10 +32,10 @@ export const Navbar = () => {
                         </li>
                     </ul>
                     <div className="d-flex">
-                        {store.session && <button className="btn btn-outline-dark me-2" type="submit">
+                        {store.session && <Link to={"/cart"} className="btn btn-outline-dark me-2" type="submit">
                             <i className="fas fa-shopping-cart me-1"></i>
-                            <span className="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>}
+                            <span className="badge bg-dark text-white ms-1 rounded-pill">{cart.length}</span>
+                        </Link>}
                         {store.session && <button type="button" className="btn btn-primary me-2" onClick={()=>actions.setSessionNull()} >
                             Log out
                         </button>}

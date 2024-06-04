@@ -19,6 +19,9 @@ export const SingleArticle = () => {
       <div>Loading</div>
     )
   }
+  const handleClick = () => {
+    actions.addToCart(store.cart.id, params.id)
+  }
   return (
     <div className="py-5">
       <div className="container">
@@ -80,7 +83,7 @@ export const SingleArticle = () => {
                   </div>
                 </div>
               </div>
-              <div href="#" className="btn btn-primary shadow-0"> <i className="me-1 fa fa-shopping-basket"></i> Añadir al carrito </div>
+              <div onClick={handleClick} className="btn btn-primary shadow-0"> <i className="me-1 fa fa-shopping-basket"></i> Añadir al carrito </div>
             </div>
           </div>
         </div>

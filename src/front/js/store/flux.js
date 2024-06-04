@@ -16,16 +16,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			session: null,
 			cart: [],
-			productos: []
+			productos: [],
+			
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			
-			loginUser: async (email,password) => {
+
+			loginUser: async (email, password) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/login", {
-						method: "POST", 
-						headers: {"Content-Type": "application/json"},
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							email,
 							password,
@@ -34,9 +35,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const session = await response.json()
 					const store = getStore()
 					setStore({
-						...store,session						
-					}) 
-					setStore({cart:session.cesta_lista[0]}) 
+						...store, session
+					})
+					setStore({ cart: session.cesta_lista[0] })
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
 					console.log(session)
 					return session
@@ -49,37 +50,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setSessionNull: () => {
 				const store = getStore()
-				setStore({...store,session:null})
+				setStore({ ...store, session: null })
 			},
-			
+
 			getProducts: async () => {
-				try{
+				try {
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/productos")
 					const data = await resp.json()
 					const store = getStore()
-					setStore({...store, productos: data })
+					setStore({ ...store, productos: data })
 					// don't forget to return something, that is how the async resolves
 					return data;
-				}catch(error){
+				} catch (error) {
 					console.log("Error loading products from backend", error), 400
 				}
 			},
 
 			getOneProduct: async () => {
-				try{
+				try {
 					const resp = await fetch(process.env.BACKEND_URL + "/productos/{:id}")
 					const data = await resp.json()
 					setStore({ producto: data })
-				}catch(error){
-					console.log("Error loading one product from backend", error), 400}
+				} catch (error) {
+					console.log("Error loading one product from backend", error), 400
+				}
 			},
 
-			createUser: async (email,password, nombre) => {
+			createUser: async (email, password, nombre) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/register", {
-						method: "POST", 
-						headers: {"Content-Type": "application/json"},
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({
 							email,
 							password,
@@ -89,8 +91,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const session = await response.json()
 					const store = getStore()
 					setStore({
-						...store,session
-					}) 
+						...store, session
+					})
 					return session
 				} catch (error) {
 					console.log("Error creating user from backend", error);
@@ -101,15 +103,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			addToCart: async (id, articulo_id) => {
 				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta', {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
 						"cesta_id": id,
 						"articulo_id": articulo_id
-						})
+					})
 				})
+				if (response) { console.log("articulo añadido") }
 				const resp = resp => console.log(resp);
 				const error = error => console.log(error);
 			},
-
+			
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
