@@ -40,7 +40,7 @@ def handle_register():
 @api.route('/login', methods = ['POST'])
 def login_user():
     request_body = request.get_json(force=True)
-    user = Usuario.query.filter_by(email=request_body["email"]).first()
+    user = Usuario.query.filter_by(email=request_body["email"], password=request_body["password"]).first()
     if user is None: 
         raise APIException("Las credenciales son incorrectas",403)
     # Buscar los items del carrito

@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			session: null,
 			cart: [],
 			productos: [],
-			
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -40,6 +40,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ cart: session.cesta_lista[0] })
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
 					console.log(session)
+					await getActions().getCart()
 					return session
 				} catch (error) {
 					console.log("Error login user", error);
@@ -101,7 +102,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-			addToCart: async (id, articulo_id) => {
+			addToCart: async (articulo_id) => {
+				let id = getStore().session.cesta_lista[0].id
 				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta', {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -111,24 +113,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				})
 				if (response) { console.log("articulo añadido") }
+				getActions().getCart()
 				const resp = resp => console.log(resp);
 				const error = error => console.log(error);
 			},
-			
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+			deleteFromCart: async (articulo_id) => {
+				let id = getStore().session.cesta_lista[0].id
+				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta/' + id + "/" + articulo_id, {
+					method: "DELETE",
+					headers: { "Content-Type": "application/json" },
 
-				//reset the global store
-				setStore({ demo: demo });
-			}
+				})
+				if (response) { console.log("articulo eliminado") }
+				getActions().getCart()
+				const resp = resp => console.log(resp);
+				const error = error => console.log(error);
+			},
+
+			getCart: async () => {
+				let id = getStore().session.cesta_lista[0].id
+				fetch(process.env.BACKEND_URL + `/articulos_cesta/${id}`)
+					.then(response => response.json())
+					// .then (response => console.log("CESTA", response))
+					.then(response => setStore({cart: response.articulos}))
+
+			},
 		}
 	};
 };
