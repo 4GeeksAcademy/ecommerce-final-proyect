@@ -1,34 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useContext } from "react";
 import { Context } from "../store/appContext";
 
 export const Cart = () => {
   const {store,actions} = useContext(Context)
   const [cart, setCart]= useState ([])
-  fetch(process.env.BACKEND_URL + `/articulos_cesta/${store.cart.id}`)
-  .then (response => response.json())
-  // .then (response => console.log("CESTA", response))
-  .then (response => setCart(response.articulos))
-    return (
+  // const [totalPayment, setTotalPayment]= useState(0)
+
+  const total = ()=>{
+  let sum = 0;
+  store.cart.forEach(product=> sum += product.precio)
+  return sum
+}
+const totalPayment = total()
+
+  return (
 <section className="h-100 gradient-custom">
   <div className="container py-5">
     <div className="row d-flex justify-content-center my-4">
       <div className="col-md-8">
         <div className="card mb-4">
           <div className="card-header py-3">
-            <h5 className="mb-0">Cart - {cart.length} items</h5>
+            <h5 className="mb-0">Cart - {store.cart?.length} items</h5>
           </div>
           <div className="card-body">
 
                 {
-                  cart.length === 0 ? <h1>No hay artículos en el carrito</h1>:
-                  cart.map(product => (
+                  store.cart?.length === 0 ? <h1>No hay artículos en el carrito</h1>:
+                  store.cart?.map((product, i) => (
 
-            <div className="row">
+            <div key={i} className="row">
               <div className="col-lg-3 col-md-12 mb-4 mb-lg-0">
                 <div className="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                   <img src={product.imagen}
-                    className="w-100" alt="Blue Jeans Jacket" />
+                    className="w-100" />
                   <a href="#!">
                     <div className="mask" style={{backgroundColor: "#ffffff"}}></div>
                   </a>
@@ -41,7 +46,7 @@ export const Cart = () => {
                 <p><strong>{product.nombre}</strong></p>
                 <p>Color: blue</p>
                 <p>Size: M</p>
-                <button  type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-sm me-1 mb-2" data-mdb-tooltip-init
+                <button onClick={()=> actions.deleteFromCart(product.articulo_id)} type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-sm me-1 mb-2" data-mdb-tooltip-init
                   title="Remove item">
                   <i className="fas fa-trash"></i>
                 </button>
@@ -75,7 +80,7 @@ export const Cart = () => {
                 </p>
  
               </div>
-              <hr className="mt-4" />
+              <hr className="mt-1" />
             </div>
                   ))
                 }
@@ -106,22 +111,22 @@ export const Cart = () => {
             <ul className="list-group list-group-flush">
               <li
                 className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                Products
-                <span>$53.98</span>
+                Productos
+                <span>{totalPayment} €</span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                Shipping
+                Envío
                 <span>Gratis</span>
               </li>
               <li
                 className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                 <div>
-                  <strong>Total amount</strong>
+                  <strong>Total</strong>
                   <strong>
-                    <p className="mb-0">(including VAT)</p>
+                    <p className="mb-0">(includido IVA)</p>
                   </strong>
                 </div>
-                <span><strong>$53.98</strong></span>
+                <span><strong>{totalPayment} €</strong></span>
               </li>
             </ul>
 

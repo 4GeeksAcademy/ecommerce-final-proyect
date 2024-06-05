@@ -6,7 +6,7 @@ import { Link,useNavigate } from "react-router-dom";
 export const Card = ({ nombre,precio, descripcion,uid,imagen }) => {
   const {store, actions} = useContext(Context)
   const navigate = useNavigate()
-  console.log( nombre,precio, descripcion,uid,imagen );
+  // console.log( nombre,precio, descripcion,uid,imagen );
   return (
     <div className="card mx-auto" style={{ width: "18rem" }}>
       <img
@@ -19,7 +19,7 @@ export const Card = ({ nombre,precio, descripcion,uid,imagen }) => {
         <p className="card-text my-0">
         </p>
         <div className="d-flex justify-content-between">
-        <div onClick={() => actions.addToCart(store.cart.id, uid)} className="btn btn-primary">
+        <div onClick={() => actions.addToCart(uid)} className="btn btn-primary">
           Añadir a carrito
           <i className="bi-cart-fill me-1"></i>
         </div>

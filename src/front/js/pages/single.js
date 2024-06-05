@@ -20,7 +20,7 @@ export const SingleArticle = () => {
     )
   }
   const handleClick = () => {
-    actions.addToCart(store.cart.id, params.id)
+    actions.addToCart(params.id)
   }
   return (
     <div className="py-5">

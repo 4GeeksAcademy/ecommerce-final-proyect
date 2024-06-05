@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react";
 import { Context } from "../store/appContext";
@@ -9,11 +9,10 @@ export const Navbar = () => {
     const {store,actions} = useContext(Context)
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
-    const [cart, setCart]= useState ([])
-fetch(process.env.BACKEND_URL + `/articulos_cesta/${store.cart.id}`)
-.then (response => response.json())
-// .then (response => console.log("CESTA", response))
-.then (response => setCart(response.articulos))
+    const handleLogOut = ()=>{
+        actions.setSessionNull()
+        navigate("/")
+    }
 
    return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,9 +33,9 @@ fetch(process.env.BACKEND_URL + `/articulos_cesta/${store.cart.id}`)
                     <div className="d-flex">
                         {store.session && <Link to={"/cart"} className="btn btn-outline-dark me-2" type="submit">
                             <i className="fas fa-shopping-cart me-1"></i>
-                            <span className="badge bg-dark text-white ms-1 rounded-pill">{cart.length}</span>
+                            <span className="badge bg-dark text-white ms-1 rounded-pill">{store.cart?.length}</span>
                         </Link>}
-                        {store.session && <button type="button" className="btn btn-primary me-2" onClick={()=>actions.setSessionNull()} >
+                        {store.session && <button type="button" className="btn btn-primary me-2" onClick={()=>handleLogOut()} >
                             Log out
                         </button>}
 
@@ -74,7 +73,7 @@ fetch(process.env.BACKEND_URL + `/articulos_cesta/${store.cart.id}`)
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={()=>actions.loginUser(email,password)}>Login</button>
+                                        <button type="submit" className="btn btn-primary" data-bs-dismiss="modal" onClick={async ()=>await actions.loginUser(email,password)}>Login</button>
                                     </div>
                                 </div>
                             </div>
