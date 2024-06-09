@@ -5,6 +5,10 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from api.models import Usuario, Articulo, Cesta, CestaArticulo, db
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 
 api = Blueprint('api', __name__)
 
@@ -37,17 +41,31 @@ def handle_register():
     db.session.commit()    
     return jsonify(user.serialize()), 201
 
-@api.route('/login', methods = ['POST'])
-def login_user():
-    request_body = request.get_json(force=True)
-    user = Usuario.query.filter_by(email=request_body["email"], password=request_body["password"]).first()
-    if user is None: 
-        raise APIException("Las credenciales son incorrectas",403)
-    # Buscar los items del carrito
-    cart = Cesta.query.filter_by(usuario_id = user.id).first()
-    print(cart)
-    response_body = {"carrito": cart}
-    return jsonify(user.serialize()),200
+# @api.route('/login', methods = ['POST'])
+# def login_user():
+#     request_body = request.get_json(force=True)
+#     user = Usuario.query.filter_by(email=request_body["email"], password=request_body["password"]).first()
+#     if user is None: 
+#         return jsonify({"Las credenciales son incorrectas"}),403
+#     if password != user.password:
+#         return jsonify({"msg":"password incorrecto"}), 401
+#     # Buscar los items del carrito
+#     cart = Cesta.query.filter_by(usuario_id = user.id).first()
+#     print(cart)
+#     response_body = {"carrito": cart}
+#     return jsonify(user.serialize()),200
+@api.route("/login", methods=["POST"])
+def login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    user = Usuario.query.filter_by(email=email).first()
+    print(user)
+    if user is None:
+        return jsonify({"msg":"email incorrecto"}), 401
+    if password != user.password:
+        return jsonify({"msg":"password incorrecto"}), 401
+    access_token = create_access_token(identity=email)
+    return jsonify({"access_token": access_token, "user": user.serialize()})
 
 @api.route('/articulos_cesta', methods = ['POST'])
 def add_article():
