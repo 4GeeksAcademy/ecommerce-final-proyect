@@ -110,7 +110,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			addToCart: async (articulo_id) => {
-				// let id = getStore().session.cesta_lista[0].id
+				let id = getStore().user.cesta_lista[0].id
+				console.log(getStore());
 				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta',
 					{
 						method: "POST",
@@ -146,7 +147,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getCart: async () => {
-				// let id = getStore().session.cesta_lista[0].id
+				let id = getStore().user.cesta_lista[0].id
 				fetch(process.env.BACKEND_URL + `/articulos_cesta/${id}`, {
 					method: "GET",
 					headers:{
