@@ -34,13 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						})
 					})
 					const session = await response.json()
-					const store = getStore()
-					setStore({
-						...store, session,
-						token: session.access_token,
-						user: session.user,
-						cart: session.user.cesta_lista[0].cesta_articulo
-					})
+					getActions().setSession(session)					
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
 					console.log(getStore())
 					await getActions().getCart()
@@ -51,9 +45,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 			},
+			setSession: (session)=>{
+				const store = getStore()
+				setStore({
+					...store, session,
+					token: session.access_token,
+					user: session.user,
+					cart: session.user.cesta_lista.at(-1).cesta_articulo
+				})
+			},
 
 			setSessionNull: () => {
 				const store = getStore()
+				localStorage.clear()
 				setStore({ ...store, session: null })
 			},
 
