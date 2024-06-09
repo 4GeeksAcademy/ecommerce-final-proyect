@@ -131,7 +131,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			deleteFromCart: async (articulo_id) => {
-				// let id = getStore().session.cesta_lista[0].id
+				let id = getStore().user.cesta_lista[0].id
 				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta/' + id + "/" + articulo_id, {
 					method: "DELETE",
 					headers: {
