@@ -14,6 +14,7 @@ export const Home = () => {
                 </div>
             </header>
             <div className="container row mx-auto ">
+                {console.log(store.productos)}
                 {store.productos?.map(el => <div key={el.id} className="col-sm-3 col-lg-3 py-1">< Card nombre={el.nombre} precio={el.precio} descripcion={el.descripcion} uid={el.id} imagen={el.imagen} /></div>)}
             </div>
         </div>

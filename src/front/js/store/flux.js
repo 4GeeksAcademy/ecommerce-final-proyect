@@ -17,6 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			session: null,
 			cart: [],
 			productos: [],
+			token: null,
 
 		},
 		actions: {
@@ -33,13 +34,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						})
 					})
 					const session = await response.json()
-					const store = getStore()
-					setStore({
-						...store, session
-					})
-					setStore({ cart: session.cesta_lista[0] })
+					getActions().setSession(session)					
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
-					console.log(session)
+					console.log(getStore())
 					await getActions().getCart()
 					return session
 				} catch (error) {
@@ -48,9 +45,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 			},
+			setSession: (session)=>{
+				const store = getStore()
+				setStore({
+					...store, session,
+					token: session.access_token,
+					user: session.user,
+					cart: session.user.cesta_lista.at(-1).cesta_articulo
+				})
+			},
 
 			setSessionNull: () => {
 				const store = getStore()
+				localStorage.clear()
 				setStore({ ...store, session: null })
 			},
 
@@ -103,15 +110,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			addToCart: async (articulo_id) => {
-				let id = getStore().session.cesta_lista[0].id
-				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta', {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						"cesta_id": id,
-						"articulo_id": articulo_id
+				let id = getStore().user.cesta_lista[0].id
+				console.log(getStore());
+				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta',
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${getStore().token}`
+						},
+						body: JSON.stringify({
+							"cesta_id": id,
+							"articulo_id": articulo_id
+						})
 					})
-				})
 				if (response) { console.log("articulo añadido") }
 				getActions().getCart()
 				const resp = resp => console.log(resp);
@@ -119,10 +131,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			deleteFromCart: async (articulo_id) => {
-				let id = getStore().session.cesta_lista[0].id
+				let id = getStore().user.cesta_lista[0].id
 				const response = await fetch(process.env.BACKEND_URL + '/articulos_cesta/' + id + "/" + articulo_id, {
 					method: "DELETE",
-					headers: { "Content-Type": "application/json" },
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${getStore().token}`
+					},
 
 				})
 				if (response) { console.log("articulo eliminado") }
@@ -132,11 +147,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getCart: async () => {
-				let id = getStore().session.cesta_lista[0].id
-				fetch(process.env.BACKEND_URL + `/articulos_cesta/${id}`)
+				let id = getStore().user.cesta_lista[0].id
+				fetch(process.env.BACKEND_URL + `/articulos_cesta/${id}`, {
+					method: "GET",
+					headers:{
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${getStore().token}`
+					}
+				})
+
 					.then(response => response.json())
 					// .then (response => console.log("CESTA", response))
-					.then(response => setStore({cart: response.articulos}))
+					.then(response => setStore({ cart: response.articulos }))
 
 			},
 		}
