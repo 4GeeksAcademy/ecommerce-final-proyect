@@ -36,7 +36,7 @@ class Usuario(db.Model):
             "nombre": self.nombre,
             "email": self.email,
             "apellido": self.apellido,
-            "cesta_lista": [cesta.serialize() for cesta in self.cesta_lista]
+            "cesta_lista": [cesta.serializeArticulo() for cesta in self.cesta_lista]
         }
 
 class Cesta(db.Model):

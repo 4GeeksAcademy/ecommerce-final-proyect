@@ -39,7 +39,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						...store, session,
 						token: session.access_token,
 						user: session.user,
-						cart: session.user.cesta_lista[0].id
+						cart: session.user.cesta_lista[0].cesta_articulo
 					})
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
 					console.log(getStore())
