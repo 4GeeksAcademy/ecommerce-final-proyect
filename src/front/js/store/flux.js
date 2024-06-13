@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			session: null,
 			cart: [],
 			productos: [],
-			token: null,
+			token: null,		
 
 		},
 		actions: {
@@ -38,6 +38,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Ejecutar la funcion de traerse el carrito getActions().getCarrito()
 					console.log(getStore())
 					await getActions().getCart()
+					localStorage.setItem("active", "true")
 					return session
 				} catch (error) {
 					console.log("Error login user", error);
@@ -58,9 +59,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setSessionNull: () => {
 				const store = getStore()
 				localStorage.clear()
-				setStore({ ...store, session: null })
+				setStore({ ...store, session: null
+				 })
 			},
 
+			setActive: () => {
+				localStorage.removeItem("active")
+			},
+		
 			getProducts: async () => {
 				try {
 					// fetching data from the backend

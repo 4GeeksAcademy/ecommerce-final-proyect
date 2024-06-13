@@ -13,6 +13,7 @@ export const Cart = () => {
   return sum
 }
 const totalPayment = total()
+useEffect(() => { const fetchCart = async () => { await actions.getCart(); }; fetchCart(); }, []);
 
   return (
 <section className="h-100 gradient-custom">
