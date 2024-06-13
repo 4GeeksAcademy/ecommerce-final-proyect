@@ -9,11 +9,15 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
+import stripe
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+# This is your test secret API key.
+stripe.api_key = 'sk_test_51PNaoKF7XdAQA3Pm120EB7sG5W1wFNOwQ8sUANcDN3NbGhQNZti8tJioRAmohG4qIAheL7Cotm2Ym6fHnkBWoxw400CzihPp6e'
+
 
 # @api.route('/')
 # def sitemap():
@@ -107,3 +111,23 @@ def delete_cart_article(cesta_id, articulo_id):
     db.session.commit()
     
     return jsonify({"msg": "Artículo eliminado de la cesta"}), 200
+
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price': '{{PRICE_ID}}',
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '?success=true',
+            cancel_url=YOUR_DOMAIN + '?canceled=true',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)

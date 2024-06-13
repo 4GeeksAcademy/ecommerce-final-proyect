@@ -7,8 +7,13 @@ export const Card = ({ nombre,precio, descripcion,uid,imagen }) => {
   const {store, actions} = useContext(Context)
   const navigate = useNavigate()
   // console.log( nombre,precio, descripcion,uid,imagen );
+    const handleAddToCart= (uid) => {
+    const state = localStorage.getItem("active")
+    state? actions.addToCart(uid):
+    alert ("Tienes que loguearte primero")
+  } 
   return (
-    <div className="card mx-auto" style={{ width: "18rem" }}>
+    <div className="card mx-auto cards" style={{ width: "18rem" }}>
       <img
         src={imagen}
         className="card-img-top mx-0"
@@ -19,7 +24,7 @@ export const Card = ({ nombre,precio, descripcion,uid,imagen }) => {
         <p className="card-text my-0">
         </p>
         <div className="d-flex justify-content-between">
-        <div onClick={() => actions.addToCart(uid)} className="btn btn-primary">
+        <div onClick={() => handleAddToCart(uid)} className="btn btn-primary">
           Añadir a carrito
           <i className="bi-cart-fill me-1"></i>
         </div>
